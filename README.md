@@ -12,3 +12,5 @@ everything else at 'mod' folder with new folder name 'bdnew'
 To add custom Megas, alter a competitively useless item from 'items.js' and add the Mega in 'pokedex.js' as well as in Line 45 of 'scripts.js'
 
 e.g. Bluk Berry in items.js, Machamp-Mega in pokedex.js
+
+formats-data.js doesn't need entry of the custom Mega. It is only for releasing unreleasing Pokémon and determining tiers.
