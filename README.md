@@ -13,4 +13,4 @@ To add custom Megas, alter a competitively useless item from 'items.js' and add 
 
 e.g. Bluk Berry in items.js, Machamp-Mega in pokedex.js
 
-formats-data.js doesn't need entry of the custom Mega. It is only for releasing unreleasing Pokémon and determining tiers.
+formats-data.js doesn't need entry of the custom Mega. It is only for releasing unreleasing Pokémon and determining which Pokémon stays in which tier.
