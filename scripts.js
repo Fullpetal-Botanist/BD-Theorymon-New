@@ -25,6 +25,15 @@ exports.BattleScripts = {
      this.modData('Learnsets', 'silvally').learnset.recover = ['7T'];
      this.modData('Learnsets', 'palossand').learnset.stealthrock = ['7T'];
      this.modData('Learnsets', 'primarina').learnset.wish = ['7T'];     
+     this.modData('Learnsets', 'golurk').learnset.shiftgear = ['7T'];
+     this.modData('Learnsets', 'mismagius').learnset.moonblast = ['7T'];
+     this.modData('Learnsets', 'honchkrow').learnset.swordsdance = ['7T'];
+     this.modData('Learnsets', 'bouffalant').learnset.headsmash = ['7T'];
+     this.modData('Learnsets', 'yanmega').learnset.dragonpulse = ['7T'];
+     this.modData('Learnsets', 'luxray').learnset.knockoff = ['7T'];     
+     this.modData('Learnsets', 'torterra').learnset.thousandwaves = ['7T'];
+     this.modData('Learnsets', 'roserade').learnset.earthpower = ['7T'];
+     this.modData('Learnsets', 'machamp').learnset.drainpunch = ['7T'];     
      
     },
 
@@ -42,7 +51,7 @@ exports.BattleScripts = {
      }
      
      //Prevent sprites from screwing with our stuff.
-     let forbid = {'Machamp-Mega':'Bluk Berry'};
+     let forbid = {'Machamp-Mega':'Bluk Berry', 'Torterra-Mega':'Qualot Berry', 'Roserade-Mega':'Grepa Berry', 'Luxray-Mega':'Kelpsy Berry', 'Yanmega-Mega':'Hondew Berry', 'Bouffalant-Mega':'Pomeg Berry', 'Honchkrow-Mega':'Dusk Ball', 'Mismagius-Mega':'Moon Ball', 'Golurk-Mega':'Heavy Ball'};
      if (template.species in forbid) {
        //Case 1: Sprites don't exist
        template = Object.assign({}, template); //Prevent metagame crosstalk.
