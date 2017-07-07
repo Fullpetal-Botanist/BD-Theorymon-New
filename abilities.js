@@ -109,14 +109,97 @@ exports.BattleAbilities = {
 		rating: 2.5,
 		num: 212,
 	},
-	"runaway": {
-		shortDesc: "Summons Trick Room for 5 turns",
-		onStart: function (source) {
-				this.addPseudoWeather('trickroom');                   
+	"mummy": {
+		desc: "Pokemon making contact with this Pokemon have their Ability changed to Mummy. Does not affect the Abilities Multitype or Stance Change.",
+		shortDesc: "Pokemon making contact with this Pokemon have their Ability changed to Mummy.",
+		id: "mummy",
+		name: "Mummy",
+		onAnyFaint: function () {
+			this.boost({spa:1}, this.effectData.target);
 		},
-		id: "runaway",
-		name: "Run Away",
+		onAfterDamage: function (damage, target, source, move) {
+			if (source && source !== target && move && move.flags['contact']) {
+				let oldAbility = source.setAbility('mummy', source, 'mummy', true);
+				if (oldAbility) {
+					this.add('-activate', target, 'ability: Mummy', this.getAbility(oldAbility).name, '[of] ' + source);
+				}
+			}
+		},
+		rating: 2,
+		num: 152,
+	},
+	"berserk": {
+		desc: "When this Pokemon has more than 1/2 its maximum HP and takes damage from an attack bringing it to 1/2 or less of its maximum HP, its Special Attack is raised by 1 stage. This effect applies after all hits from a multi-hit move; Sheer Force prevents it from activating if the move has a secondary effect.",
+		shortDesc: "This Pokemon's Sp. Atk is raised by 1 when it reaches 1/2 or less of its max HP.",
+		onAfterMoveSecondary: function (target, source, move) {
+			if (!source || source === target || !target.hp || !move.totalDamage) return;
+			if (target.hp <= target.maxhp / 2 && target.hp + move.totalDamage > target.maxhp / 2) {
+				this.boost({spa: 3});
+			}
+		},
+		id: "berserk",
+		name: "Berserk",
+		rating: 2.5,
+		num: 201,
+	},
+	"rkssystem": {
+		shortDesc: "If this Pokemon is a Silvally, its type changes to match its held Memory.",
+		// RKS System's type-changing itself is implemented in statuses.js
+		id: "rkssystem",
+		name: "RKS System",
+		onAnyModifyBoost: function (boosts, target) {
+			let source = this.effectData.target;
+			if (source === target) return;
+			if (source === this.activePokemon && target === this.activeTarget) {
+				boosts['def'] = 0;
+				boosts['spd'] = 0;
+				boosts['evasion'] = 0;
+			}
+			if (target === this.activePokemon && source === this.activeTarget) {
+				boosts['atk'] = 0;
+				boosts['spa'] = 0;
+				boosts['accuracy'] = 0;
+			}
+		},
 		rating: 4,
-		num: 50,
+		num: 225,
+	},
+	"gooey": {
+		shortDesc: "Pokemon making contact with this Pokemon have their Speed lowered by 1 stage.",
+		onSourceModifyDamage: function (damage, source, target, move) {
+			let mod = 1;
+			if (move.flags['contact']) mod /= 1.2;
+			return this.chainModify(mod);
+		},
+		onAfterDamage: function (damage, target, source, effect) {
+			if (effect && effect.flags['contact']) {
+				this.add('-ability', target, 'Gooey');
+				this.boost({spe: -1}, source, target, null, true);
+			}
+		},
+		id: "gooey",
+		name: "Gooey",
+		rating: 2.5,
+		num: 183,
+	},
+	"toxicboost": {
+		desc: "While this Pokemon is poisoned, the power of its physical attacks is multiplied by 1.5.",
+		shortDesc: "While this Pokemon is poisoned, its physical attacks have 1.5x power.",
+		onBasePowerPriority: 8,
+		onBasePower: function (basePower, attacker, defender, move) {
+			if ((attacker.status === 'psn' || attacker.status === 'tox') && move.category === 'Physical') {
+				return this.chainModify(1.5);
+			}
+		},
+		onDamage: function (damage, target, source, effect) {
+			if (effect.id === 'psn' || effect.id === 'tox') {
+				this.heal(target.maxhp / 8);
+				return false;
+			}
+		},
+		id: "toxicboost",
+		name: "Toxic Boost",
+		rating: 3,
+		num: 137,
 	},
 };
